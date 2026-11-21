@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#111713">
+<meta name="description" content="Carte interactive des armes permanentes de GTA VI — projet fan-made par Topiiiii.">
+<title>GTA 6 · Iconic Weapons Map</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#101512;--panel:#18211b;--panel2:#202b23;--line:#334238;--text:#edf4ed;--muted:#a9b7aa;--gold:#d6b45d;--green:#8fbe86;--red:#df8a79}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+body{overflow:hidden}.app{height:100dvh;display:grid;grid-template-rows:58px 1fr}
+header{display:flex;align-items:center;gap:12px;padding:0 14px;background:#111813;border-bottom:1px solid var(--line);z-index:5}
+.brand{font-weight:850;letter-spacing:.04em;font-size:15px}.brand span{color:var(--gold)}.tag{font-size:10px;color:var(--muted);border:1px solid var(--line);padding:4px 7px;border-radius:20px}
+.header-actions{margin-left:auto;display:flex;gap:8px}
+button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:9px;padding:9px 11px;font-weight:650;font-size:12px;cursor:pointer}
+button.primary{background:var(--gold);color:#17170f;border-color:var(--gold)}
+main{position:relative;min-height:0}.mapframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#202820}
+.scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(9,14,10,.38),transparent 34%);z-index:1}
+.panel{position:absolute;z-index:2;top:14px;left:14px;bottom:14px;width:min(340px,calc(100vw - 28px));background:rgba(19,27,21,.96);border:1px solid #405044;border-radius:16px;box-shadow:0 14px 40px #0008;display:flex;flex-direction:column;overflow:hidden;backdrop-filter:blur(12px)}
+.panel-head{padding:16px;border-bottom:1px solid var(--line)}.eyebrow{font-size:10px;color:var(--gold);font-weight:800;letter-spacing:.15em}.panel h1{font-size:20px;line-height:1.1;margin:7px 0}.panel p{font-size:12px;line-height:1.5;color:var(--muted);margin:7px 0 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px}.stat{background:var(--panel2);padding:10px;border-radius:10px}.stat strong{display:block;font-size:20px;color:var(--gold)}.stat span{font-size:10px;color:var(--muted)}
+.search{margin:0 14px 10px;background:#0e1510;border:1px solid var(--line);border-radius:9px;padding:10px;color:var(--text);width:calc(100% - 28px);font-size:13px;outline:none}
+.filters{display:flex;gap:6px;padding:0 14px 10px;flex-wrap:wrap}.chip{font-size:10px;border:1px solid var(--line);border-radius:20px;padding:6px 8px;color:var(--muted)}
+.list{overflow:auto;padding:0 14px 14px;flex:1}.empty{border:1px dashed #566558;border-radius:12px;padding:14px;margin-top:3px}.empty b{font-size:13px}.empty p{margin:7px 0 0;font-size:11px}
+.weapon{border:1px solid var(--line);border-radius:11px;padding:11px;margin-bottom:8px;background:#202a23;cursor:pointer}.weapon h3{font-size:13px;margin:0 0 5px}.weapon small{color:var(--muted);font-size:10px}
+.notice{margin:0 14px 12px;padding:9px 10px;background:#292719;border:1px solid #6a5a2c;border-radius:9px;color:#e8d69d;font-size:10px;line-height:1.45}
+.bottom{position:absolute;right:14px;bottom:14px;z-index:3;display:flex;gap:7px}
+.bottom button{background:rgba(17,24,19,.93);backdrop-filter:blur(8px)}
+.panel-toggle{display:none}
+@media(max-width:700px){.app{grid-template-rows:52px 1fr}.brand{font-size:13px}.tag{display:none}.panel{top:auto;left:8px;right:8px;bottom:8px;width:auto;height:min(42dvh,340px);border-radius:14px}.panel.collapsed{height:54px}.panel.collapsed .panel-body{display:none}.panel-head{padding:11px 13px}.panel h1{font-size:16px;margin:4px 0}.panel-head p{display:none}.panel-toggle{display:block;margin-left:auto}.stats{padding:8px 12px}.stat{padding:7px}.stat strong{font-size:16px}.search{margin:0 12px 8px;width:calc(100% - 24px);padding:8px}.filters{padding:0 12px 8px}.list{padding:0 12px 10px}.notice{margin:0 12px 9px}.bottom{right:9px;top:9px;bottom:auto;flex-direction:column}.bottom button{padding:8px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand">TOPIIIII <span>· ICONIC WEAPONS MAP</span></div>
+  <div class="tag">GTA VI · FAN PROJECT</div>
+  <div class="header-actions">
+    <button id="openOriginal">Carte source ↗</button>
+    <button class="primary" id="fullscreen">Plein écran</button>
+  </div>
+</header>
+<main id="mapArea">
+  <iframe class="mapframe" id="gameMap" title="Carte interactive de GTA VI" src="https://gtamap.io/fr/" allow="fullscreen; clipboard-read; clipboard-write" loading="eager"></iframe>
+  <div class="scrim"></div>
+  <aside class="panel" id="panel">
+    <div class="panel-head">
+      <div class="eyebrow">LEONIDA · WEAPON TRACKER</div>
+      <div style="display:flex;align-items:center"><h1>Armes permanentes</h1><button class="panel-toggle" id="collapse">Réduire</button></div>
+      <p>Uniquement les armes dont la conservation permanente après la mort est confirmée. Les armes simplement rares ou ramassées temporairement sont exclues.</p>
+    </div>
+    <div class="panel-body" style="display:flex;flex-direction:column;min-height:0;flex:1">
+      <div class="stats">
+        <div class="stat"><strong id="count">0</strong><span>armes validées</span></div>
+        <div class="stat"><strong id="found">0</strong><span>récupérées par toi</span></div>
+      </div>
+      <input class="search" id="search" type="search" placeholder="Rechercher une arme, une région…">
+      <div class="filters"><span class="chip">Permanent confirmé</span><span class="chip">Sources requises</span><span class="chip">Coordonnées vérifiées</span></div>
+      <div class="list" id="weaponList">
+        <div class="empty">
+          <b>Catalogue en cours de vérification</b>
+          <p>Aucune arme n'est ajoutée automatiquement à cette liste. Chaque fiche devra prouver qu'elle reste dans l'inventaire après une mort et fournir une position précise vérifiée en jeu. Cela évite les faux marqueurs.</p>
+        </div>
+      </div>
+      <div class="notice">La carte de fond est fournie par GTAMap.io. Dans la carte, ouvre les filtres puis « Armes » → « Armes à ramasser » pour consulter les repères de leur base. Ces repères ne sont pas tous garantis permanents.</div>
+    </div>
+  </aside>
+  <div class="bottom">
+    <button id="hidePanel">Masquer le panneau</button>
+    <button id="showPanel" style="display:none">Armes permanentes</button>
+  </div>
+</main>
+</div>
+<script>
+const original='https://gtamap.io/fr/';
+document.getElementById('openOriginal').onclick=()=>window.open(original,'_blank','noopener');
+document.getElementById('fullscreen').onclick=async()=>{const el=document.getElementById('mapArea');try{if(!document.fullscreenElement)await el.requestFullscreen();else await document.exitFullscreen()}catch(e){window.open(original,'_blank','noopener')}};
+document.getElementById('hidePanel').onclick=()=>{document.getElementById('panel').style.display='none';document.getElementById('showPanel').style.display='block'};
+document.getElementById('showPanel').onclick=()=>{document.getElementById('panel').style.display='flex';document.getElementById('showPanel').style.display='none'};
+document.getElementById('collapse').onclick=()=>document.getElementById('panel').classList.toggle('collapsed');
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
